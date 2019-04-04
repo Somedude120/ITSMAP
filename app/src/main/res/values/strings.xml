@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="my_movies">My Movies</string>
+    <string name="exit">Exit</string>
+    <string name="title">Title</string>
+    <string name="watched">Watched</string>
+    <string name="usercomment">UserComment</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">Ok</string>
+    <string name="userrating">UserRating</string>
+    <string name="rating">Rating</string>
+    <string name="plot">Plot</string>
+    <string name="genre">Genre</string>
+</resources>

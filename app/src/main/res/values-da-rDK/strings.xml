@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="my_movies">Mine Film</string>
+    <string name="exit">Luk</string>
+    <string name="title">Titel</string>
+    <string name="watched">Set</string>
+    <string name="usercomment">Bruger Kommentar</string>
+    <string name="cancel">Fortryd</string>
+    <string name="ok">Ok</string>
+    <string name="userrating">Bruger Bedømmelse</string>
+    <string name="rating">Bedømmelse</string>
+    <string name="genre">Genre</string>
+    <string name="plot">Præmis</string>
+</resources>
