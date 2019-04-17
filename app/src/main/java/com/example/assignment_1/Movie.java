@@ -1,5 +1,8 @@
 package com.example.assignment_1;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -9,13 +12,23 @@ import android.widget.ImageView;
 /**
  * This is my object based classes.
  */
+@Entity
 public class Movie implements Parcelable {
 
+
+    @PrimaryKey
+    private int Id;
+    @ColumnInfo(name = "title")
     public String Title;
+    @ColumnInfo(name = "plot")
     public String Plot;
+    @ColumnInfo(name = "watched")
     public boolean Watched;
+    @ColumnInfo(name = "comments")
     public String Comments;
+    @ColumnInfo(name = "rating")
     public String Rating;
+    @ColumnInfo(name = "myrating")
     public String MyRating;
 
     public Movie()
@@ -43,6 +56,14 @@ public class Movie implements Parcelable {
             return new Movie[size];
         }
     };
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
+    }
 
     public int getIcon() {
         return Icon;

@@ -20,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.facebook.stetho.Stetho;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,6 +50,8 @@ public class OverviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_overview);
         Button btn_Exit = findViewById(R.id.btn_Exit);
+        //Stetho plugin
+        Stetho.initializeWithDefaults(this);
 
 
         InputStream inputStream = getResources().openRawResource(R.raw.movielist);
