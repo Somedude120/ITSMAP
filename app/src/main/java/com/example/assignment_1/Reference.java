@@ -11,6 +11,8 @@ package com.example.assignment_1;
 //Reference: https://www.youtube.com/watch?v=3EQWmME-hNA&list=PLrnPJCHvNZuBhmqlWEQfvxbNtY6B_XJ3n
 //Reference: https://stackoverflow.com/questions/50915186/how-to-read-data-and-listen-to-changes-from-room-database-in-a-service
 //Reference: https://developer.android.com/training/volley/index.html
-
+//Reference: https://android.jlelse.eu/pre-populate-room-database-6920f9acc870
+//Reference: https://hackernoon.com/squeezing-performance-from-sqlite-insertions-with-room-d769512f8330
+//Reference:
 public class Reference {
 }

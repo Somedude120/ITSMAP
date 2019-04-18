@@ -1,13 +1,18 @@
 package com.example.assignment_1;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.arch.persistence.room.Database;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.app.NotificationChannel.DEFAULT_CHANNEL_ID;
 
 public class SyncService extends Service
 {
@@ -43,8 +48,23 @@ public class SyncService extends Service
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        intent.getParcelableArrayExtra("Movie");
+        Intent notificationIntent = new Intent(this,OverviewActivity.class);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,notificationIntent,0);
+
+        Notification notification = new NotificationCompat.Builder(this,DEFAULT_CHANNEL_ID)
+                .setSmallIcon(R.drawable.musicicon)
+                .setContentTitle("MovieApp")
+                .setContentText("This is assignment 2")
+                .setContentIntent(pendingIntent)
+                .build();
+        startForeground(1,notification);
+
         getFromDB(movies.get(startId));
+        //return START_NOT_STICKY;
         return super.onStartCommand(intent, flags, startId);
+
     }
 
     @Override

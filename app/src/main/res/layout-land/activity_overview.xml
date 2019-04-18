@@ -7,6 +7,18 @@
     android:layout_height="match_parent"
     tools:context=".OverviewActivity">
 
+    <Button
+        android:id="@+id/btn_Add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/Add"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_Exit"
+        app:layout_constraintTop_toTopOf="@+id/btn_Exit" />
+
     <TextView
         android:id="@+id/txt_start"
         android:layout_width="wrap_content"
@@ -40,6 +52,8 @@
         android:text="@string/exit"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.076"
+        app:layout_constraintStart_toEndOf="@+id/list_Movie" />
 
 </android.support.constraint.ConstraintLayout>

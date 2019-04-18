@@ -33,10 +33,8 @@ import java.util.List;
 import okhttp3.OkHttpClient;
 
 public class OverviewActivity extends AppCompatActivity {
+    private static final String TAG = "OverViewActivity";
     private ArrayList<Movie> movieListCVS = new ArrayList();
-    String[] TESTNAMES;
-    //public static final String MyPREFERENCES = "MyPrefs";
-    private boolean watched = false;
     private int currentItem;
     private ListView myMoviesList;
     private ArrayList<Movie> savedMovieListCVS;
@@ -53,6 +51,7 @@ public class OverviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_overview);
         Button btn_Exit = findViewById(R.id.btn_Exit);
+        Button btn_Add = findViewById(R.id.btn_Add);
         //Stetho plugin
         Stetho.initializeWithDefaults(this);
         new OkHttpClient.Builder()
@@ -130,6 +129,14 @@ public class OverviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        btn_Add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Todo: Add database stuff here
+                Log.d(TAG, "onClick: MovieTitle: " + movieListCVS.get(1).Title);
+
             }
         });
 
