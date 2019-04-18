@@ -13,6 +13,7 @@ package com.example.assignment_1;
 //Reference: https://developer.android.com/training/volley/index.html
 //Reference: https://android.jlelse.eu/pre-populate-room-database-6920f9acc870
 //Reference: https://hackernoon.com/squeezing-performance-from-sqlite-insertions-with-room-d769512f8330
+//Reference: https://stackoverflow.com/questions/52382710/permission-denial-startforeground-requires-android-permission-foreground-servic
 //Reference:
 public class Reference {
 }

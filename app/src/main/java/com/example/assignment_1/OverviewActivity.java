@@ -1,9 +1,12 @@
 package com.example.assignment_1;
 
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -46,6 +49,10 @@ public class OverviewActivity extends AppCompatActivity {
     private ImageView pic2;
 
 
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +69,12 @@ public class OverviewActivity extends AppCompatActivity {
         InputStream inputStream = getResources().openRawResource(R.raw.movielist);
         CSVReader csvReader = new CSVReader(inputStream);
         final List<String[]> movielist = csvReader.read();
+        //Notification
+        createNotificationChannel();
+
+        //Service
+        Intent serviceIntent = new Intent(this,SyncService.class);
+        startService(serviceIntent);
 
         int orientation = getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE)
@@ -137,6 +150,7 @@ public class OverviewActivity extends AppCompatActivity {
                 //Todo: Add database stuff here
                 Log.d(TAG, "onClick: MovieTitle: " + movieListCVS.get(1).Title);
 
+
             }
         });
 
@@ -201,6 +215,22 @@ public class OverviewActivity extends AppCompatActivity {
            // customListView.notifyDataSetChanged();
         }
     }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            CharSequence name = getString(R.string.movieChannel);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(getString(R.string.movieChannel), name, importance);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState)
     {
@@ -215,4 +245,5 @@ public class OverviewActivity extends AppCompatActivity {
         movieListCVS = savedInstanceState.getParcelableArrayList("savedMovieList");
         currentItem = savedInstanceState.getInt("Position");
     }
+
 }

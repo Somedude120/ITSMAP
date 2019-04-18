@@ -12,7 +12,6 @@ import android.support.v4.app.NotificationCompat;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.app.NotificationChannel.DEFAULT_CHANNEL_ID;
 
 public class SyncService extends Service
 {
@@ -53,7 +52,7 @@ public class SyncService extends Service
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,notificationIntent,0);
 
-        Notification notification = new NotificationCompat.Builder(this,DEFAULT_CHANNEL_ID)
+        Notification notification = new NotificationCompat.Builder(this,getString(R.string.movieChannel))
                 .setSmallIcon(R.drawable.musicicon)
                 .setContentTitle("MovieApp")
                 .setContentText("This is assignment 2")
@@ -61,7 +60,7 @@ public class SyncService extends Service
                 .build();
         startForeground(1,notification);
 
-        getFromDB(movies.get(startId));
+        //getFromDB(movies.get(startId)); //Add movies
         //return START_NOT_STICKY;
         return super.onStartCommand(intent, flags, startId);
 
