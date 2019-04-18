@@ -42,6 +42,9 @@ dependencies {
 
     //Service library
     implementation "com.android.support:support-compat:28.0.0"
+
+    //HTTP3 networking
+    //implementation 'com.squareup.okhttp3:okhttp:3.14.1'
 }
 
 

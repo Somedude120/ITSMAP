@@ -53,7 +53,7 @@ public class SyncService extends Service
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,notificationIntent,0);
 
         Notification notification = new NotificationCompat.Builder(this,getString(R.string.movieChannel))
-                .setSmallIcon(R.drawable.musicicon)
+                .setSmallIcon(R.drawable.actionicon)
                 .setContentTitle("MovieApp")
                 .setContentText("This is assignment 2")
                 .setContentIntent(pendingIntent)
@@ -62,6 +62,7 @@ public class SyncService extends Service
 
         //getFromDB(movies.get(startId)); //Add movies
         //return START_NOT_STICKY;
+
         return super.onStartCommand(intent, flags, startId);
 
     }

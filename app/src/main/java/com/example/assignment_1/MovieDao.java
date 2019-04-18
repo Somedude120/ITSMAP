@@ -7,13 +7,15 @@ import android.arch.persistence.room.Query;
 
 import java.util.List;
 
+import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
+
 @Dao
 public interface MovieDao {
 
     //Get all movies
     @Query("SELECT * FROM Movie")
     List<Movie>getAllMovies();
-    @Insert
+    @Insert(onConflict = REPLACE)
     void insert(Movie movie);
     @Delete
     void delete(Movie movie);

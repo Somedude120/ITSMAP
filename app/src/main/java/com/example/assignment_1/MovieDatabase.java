@@ -49,9 +49,8 @@ public abstract class MovieDatabase extends RoomDatabase {
         }
 
         @Override
-        protected Void doInBackground(final List<Movie>... taskObjects) {
+        protected Void doInBackground(final List<Movie>... movie) {
             //Prepopulating here the cvs file
-            dao.insert(new Movie());
 
             return null;
         }

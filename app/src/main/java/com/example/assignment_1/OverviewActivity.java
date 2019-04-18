@@ -76,6 +76,8 @@ public class OverviewActivity extends AppCompatActivity {
         Intent serviceIntent = new Intent(this,SyncService.class);
         startService(serviceIntent);
 
+        //Repo
+
         int orientation = getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE)
         {
@@ -138,6 +140,8 @@ public class OverviewActivity extends AppCompatActivity {
         myMoviesList = findViewById(R.id.list_Movie);
         myMoviesList.setAdapter(customListView);
 
+
+        final MovieRepository repo = new MovieRepository(this);
         btn_Exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,8 +151,10 @@ public class OverviewActivity extends AppCompatActivity {
         btn_Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Todo: Add database stuff here
-                Log.d(TAG, "onClick: MovieTitle: " + movieListCVS.get(1).Title);
+                //Todo: Add to database stuff here
+                repo.insert(movieListCVS.get(2));
+
+                Log.d(TAG, "onClick: MovieTitle: " + movieListCVS.get(2).Title);
 
 
             }
