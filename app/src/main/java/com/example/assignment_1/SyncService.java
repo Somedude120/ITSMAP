@@ -43,7 +43,7 @@ public class SyncService extends Service
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        //getFromDB();
+        getFromDB(movies.get(startId));
         return super.onStartCommand(intent, flags, startId);
     }
 

@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.facebook.stetho.Stetho;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,6 +29,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.OkHttpClient;
 
 public class OverviewActivity extends AppCompatActivity {
     private ArrayList<Movie> movieListCVS = new ArrayList();
@@ -52,6 +55,9 @@ public class OverviewActivity extends AppCompatActivity {
         Button btn_Exit = findViewById(R.id.btn_Exit);
         //Stetho plugin
         Stetho.initializeWithDefaults(this);
+        new OkHttpClient.Builder()
+                .addNetworkInterceptor(new StethoInterceptor())
+                .build();
 
 
         InputStream inputStream = getResources().openRawResource(R.raw.movielist);
