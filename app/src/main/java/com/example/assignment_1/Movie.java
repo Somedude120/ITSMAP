@@ -7,6 +7,7 @@ import android.media.Image;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.widget.ImageView;
 
 /**
@@ -17,7 +18,7 @@ public class Movie implements Parcelable {
 
 
     @PrimaryKey
-    private int Id;
+    @NonNull
     @ColumnInfo(name = "title")
     public String Title;
     @ColumnInfo(name = "plot")
@@ -56,14 +57,6 @@ public class Movie implements Parcelable {
             return new Movie[size];
         }
     };
-
-    public int getId() {
-        return Id;
-    }
-
-    public void setId(int id) {
-        Id = id;
-    }
 
     public int getIcon() {
         return Icon;

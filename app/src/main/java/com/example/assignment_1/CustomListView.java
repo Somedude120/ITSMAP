@@ -24,7 +24,6 @@ public class CustomListView extends BaseAdapter {
     }
     @Override
     public int getCount() {
-        //return TESTNAMES.length;
         return movieListCVS_.size();
     }
 

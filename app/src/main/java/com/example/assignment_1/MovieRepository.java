@@ -14,16 +14,15 @@ public class MovieRepository {
         MovieDatabase db = MovieDatabase.getDatabase(context);
         movieDao = db.dao();
         //movieList = movieDao.getAllMovies();
+        movieList = getAllMovies();
     }
+
     public List<Movie> getAllMovies(){
         new getAsyncTask(movieDao);
         return movieList;
+
     }
-    public void insert(Movie movie)
-    {
-        new insertAsyncTask(movieDao).execute(movie);
-    }
-    private static class getAsyncTask extends AsyncTask<Void,Void,Void>
+    private static class getAsyncTask extends AsyncTask<List<Movie>,Void,Void>
     {
         private MovieDao aDao;
         getAsyncTask(MovieDao dao)
@@ -32,10 +31,16 @@ public class MovieRepository {
         }
 
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected Void doInBackground(List<Movie>... voids) {
             aDao.getAllMovies();
             return null;
         }
+    }
+
+
+    public void insert(Movie movie)
+    {
+        new insertAsyncTask(movieDao).execute(movie);
     }
 
     private static class insertAsyncTask extends AsyncTask<Movie,Void,Void>

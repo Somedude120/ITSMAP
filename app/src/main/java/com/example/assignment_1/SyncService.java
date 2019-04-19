@@ -18,6 +18,7 @@ public class SyncService extends Service
     private static List<Movie> movies = new ArrayList<>();
     private static SyncServiceSupportImpl syncService;
 
+    //Get a title in the notification
     private static void getFromDB(Movie title)
     {
         new AsyncTask<Movie,Void,Void>()

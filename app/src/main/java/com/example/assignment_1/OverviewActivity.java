@@ -1,35 +1,24 @@
 package com.example.assignment_1;
 
-import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
-import android.os.Parcel;
-import android.os.Parcelable;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +31,6 @@ public class OverviewActivity extends AppCompatActivity {
     private ListView myMoviesList;
     private ArrayList<Movie> savedMovieListCVS;
     private GenreSplitter genreSplitter;
-    //final CustomListView customListView = new CustomListView(movieListCVS,OverviewActivity.this);
     private View overViewLayout; //normal overview
     private View overViewLayoutLS; //landscape overview
     private ImageView pic1;
@@ -152,9 +140,15 @@ public class OverviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Todo: Add to database stuff here
-                repo.insert(movieListCVS.get(2));
+                for (int i = 0; i < movieListCVS.size(); i++)
+                {
+                    repo.insert(movieListCVS.get(i));
+                }
+
 
                 Log.d(TAG, "onClick: MovieTitle: " + movieListCVS.get(2).Title);
+
+
 
 
             }
@@ -167,14 +161,6 @@ public class OverviewActivity extends AppCompatActivity {
                Intent detailActivityIntent = new Intent(OverviewActivity.this,DetailActivity.class);
                detailActivityIntent.putExtra("Movie",movieListCVS.get(position));
                currentItem = position; //Now I can follow the items
-
-               /*detailActivityIntent.putExtra("Title",movieListCVS.get(position).Title);
-               detailActivityIntent.putExtra("Description",movieListCVS.get(position).Plot);
-               detailActivityIntent.putExtra("MyRating",movieListCVS.get(position).MyRating);
-               detailActivityIntent.putExtra("Comments",movieListCVS.get(position).Comments);
-               detailActivityIntent.putExtra("Genre",movieListCVS.get(position).Genre);
-               detailActivityIntent.putExtra("Rating",movieListCVS.get(position).Rating);
-               detailActivityIntent.putExtra("Watched",movieListCVS.get(position).Watched);*/
 
                customListView.notifyDataSetChanged();
                startActivityForResult(detailActivityIntent,0);
@@ -218,7 +204,6 @@ public class OverviewActivity extends AppCompatActivity {
             final CustomListView customListView = new CustomListView(movieListCVS,OverviewActivity.this);
             myMoviesList = findViewById(R.id.list_Movie);
             myMoviesList.setAdapter(customListView);
-           // customListView.notifyDataSetChanged();
         }
     }
 
