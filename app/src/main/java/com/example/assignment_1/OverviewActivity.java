@@ -28,10 +28,10 @@ import okhttp3.OkHttpClient;
 
 public class OverviewActivity extends AppCompatActivity {
     private static final String TAG = "OverViewActivity";
-    private ArrayList<Movie> movieListCVS = new ArrayList();
+    private List<Movie> movieListCVS = new ArrayList();
     private int currentItem;
     private ListView myMoviesList;
-    private ArrayList<Movie> savedMovieListCVS;
+    private List<Movie> savedMovieListCVS;
     private GenreSplitter genreSplitter;
     private View overViewLayout; //normal overview
     private View overViewLayoutLS; //landscape overview
@@ -86,6 +86,8 @@ public class OverviewActivity extends AppCompatActivity {
             pic2.setImageResource(R.drawable.specialbackground2);
 
         }
+        SyncServiceSupportImpl serviceImpl = new SyncServiceSupportImpl(this);
+
 
         if(savedInstanceState != null && savedInstanceState.containsKey("savedMovieList"))
         {
@@ -93,13 +95,10 @@ public class OverviewActivity extends AppCompatActivity {
         }
         else
         {
-            savedMovieListCVS = new ArrayList();
-
-            movieListCVS = MovieHelper(movielist,movieListCVS, genreSplitter);
+            movieListCVS = serviceImpl.getMovies();
 
 
             //Two ways of removing the extra movie thing
-            movieListCVS.remove(0); //This removes the first or change the for loop to 1
             savedMovieListCVS = movieListCVS;
         }
 
@@ -132,9 +131,9 @@ public class OverviewActivity extends AppCompatActivity {
            @Override
            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                Intent detailActivityIntent = new Intent(OverviewActivity.this,DetailActivity.class);
-               detailActivityIntent.putExtra("Movie",movieListCVS.get(position));
+               //detailActivityIntent.putExtra("Movie",movieListCVS.get(position));
                currentItem = position; //Now I can follow the items
-
+               detailActivityIntent.putExtra("Position",position);
 
                customListView.notifyDataSetChanged();
                startActivityForResult(detailActivityIntent,0);
@@ -148,14 +147,12 @@ public class OverviewActivity extends AppCompatActivity {
            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                //Send Title
                Intent editActivityIntent = new Intent(OverviewActivity.this,EditActivity.class);
-               editActivityIntent.putExtra("Movie",movieListCVS.get(position));
+               //editActivityIntent.putExtra("Movie",movieListCVS.get(position));
                editActivityIntent.putExtra("Position",position);
 
                startActivityForResult(editActivityIntent,1);
                currentItem = position; //Now I can follow the items
                customListView.notifyDataSetChanged();
-
-
                return true;
 
            }
@@ -194,9 +191,9 @@ public class OverviewActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(data != null)//only do something if data has changed
         {
-            movieListCVS.get(currentItem).setWatched(data.getExtras().getBoolean("checkboxValue",false));
-            movieListCVS.get(currentItem).setMyRating(data.getStringExtra("seekbarValue"));
-            movieListCVS.get(currentItem).setComments(data.getStringExtra("userComment"));
+            //movieListCVS.get(currentItem).setWatched(data.getExtras().getBoolean("checkboxValue",false));
+            //movieListCVS.get(currentItem).setMyRating(data.getStringExtra("seekbarValue"));
+            //movieListCVS.get(currentItem).setComments(data.getStringExtra("userComment"));
             currentItem = data.getIntExtra("Position",0);
 
             //This updates the listview
@@ -225,14 +222,12 @@ public class OverviewActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("savedMovieList", movieListCVS);
         outState.putInt("Position",currentItem);
     }
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState)
     {
         super.onRestoreInstanceState(savedInstanceState);
-        movieListCVS = savedInstanceState.getParcelableArrayList("savedMovieList");
         currentItem = savedInstanceState.getInt("Position");
     }
 

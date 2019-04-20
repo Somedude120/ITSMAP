@@ -40,12 +40,10 @@ public class DetailActivity extends AppCompatActivity {
         Button btn_Ok = findViewById(R.id.btn_Ok1);
         Button btn_Delete = findViewById(R.id.btn_delete);
         CheckBox checkBoxDetail = findViewById(R.id.chckbox_Detail);
-        Movie movie = null;
-        Movie editMovie = null;
+        SyncServiceSupportImpl serviceImpl = new SyncServiceSupportImpl(this);
 
-
-
-        movie = overViewActivityIntent.getParcelableExtra("Movie");
+        final int position = overViewActivityIntent.getIntExtra("Position",0); //Get position for db
+        Movie movie = serviceImpl.getMovies().get(position);
 
 
 
