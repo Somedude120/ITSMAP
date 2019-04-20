@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
@@ -36,11 +38,6 @@ public class OverviewActivity extends AppCompatActivity {
     private ImageView pic1;
     private ImageView pic2;
 
-
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +51,7 @@ public class OverviewActivity extends AppCompatActivity {
                 .build();
 
 
+        //CSV Reading.
         InputStream inputStream = getResources().openRawResource(R.raw.movielist);
         CSVReader csvReader = new CSVReader(inputStream);
         final List<String[]> movielist = csvReader.read();
@@ -62,10 +60,29 @@ public class OverviewActivity extends AppCompatActivity {
 
         //Service
         Intent serviceIntent = new Intent(this,SyncService.class);
-        startService(serviceIntent);
+        ContextCompat.startForegroundService(this,serviceIntent);
+        //startService(serviceIntent);
+
+        //Lots of textviews
+        TextView txtTitleDetail = findViewById(R.id.txt_TitleDetail);
+        TextView txtDescription = findViewById(R.id.txt_description_detail);
+        final TextView txtComments = findViewById(R.id.txt_Comment);
+        TextView txtGenre = findViewById(R.id.txt_Genre);
+        TextView txtRating = findViewById(R.id.txt_Rating);
+        TextView txtMyRating = findViewById(R.id.txt_uRating);
+
+        //Lots of editviews
+        TextView editTitleDetail = findViewById(R.id.edit_Title);
+        TextView editDescription = findViewById(R.id.edit_description_detail);
+        TextView editComments = findViewById(R.id.edit_Comment);
+        TextView editGenre = findViewById(R.id.edit_Genre);
+        TextView editRating = findViewById(R.id.edit_Rating);
+        TextView editMyRating = findViewById(R.id.edit_uRating);
 
         //Repo
+        final MovieRepository repo = new MovieRepository(this);
 
+        //Some orientation stuff
         int orientation = getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE)
         {
@@ -95,62 +112,35 @@ public class OverviewActivity extends AppCompatActivity {
         {
             savedMovieListCVS = new ArrayList();
 
-            for (int i = 0; i < movielist.size(); i++)
-            {
-                Movie movie = new Movie();
-
-                movie.setTitle(movielist.get(i)[0]); //this one? Or
-                movie.Plot = movielist.get(i)[1]; //this one?
-                movie.Genre = movielist.get(i)[2];
-                movie.Rating = movielist.get(i)[3];
-                movie.Watched = false;
-                movie.Comments = "I don't give a flying duck"; //Clearside Cop Drama
-                movie.MyRating = "0";
+            movieListCVS = MovieHelper(movielist,movieListCVS, genreSplitter);
 
 
-
-                genreSplitter = new GenreSplitter(movie);
-                movie.Icon = genreSplitter.MainGenre();
-
-
-                movieListCVS.add(movie);
-            }
             //Two ways of removing the extra movie thing
             movieListCVS.remove(0); //This removes the first or change the for loop to 1
             savedMovieListCVS = movieListCVS;
         }
 
-
-
-
-
+        //Todo: Add the list of movies from database here
         final CustomListView customListView = new CustomListView(movieListCVS,OverviewActivity.this);
         myMoviesList = findViewById(R.id.list_Movie);
         myMoviesList.setAdapter(customListView);
 
 
-        final MovieRepository repo = new MovieRepository(this);
+
         btn_Exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+        //Sends the user to detail, where movie is created by the user.
         btn_Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Todo: Add to database stuff here
-                for (int i = 0; i < movieListCVS.size(); i++)
-                {
-                    repo.insert(movieListCVS.get(i));
-                }
-
-
-                Log.d(TAG, "onClick: MovieTitle: " + movieListCVS.get(2).Title);
-
-
-
-
+                Intent detailActivityIntent = new Intent(OverviewActivity.this,DetailActivity.class);
+                //repo.insert(movie);
+                detailActivityIntent.putExtra("editFlag",1);
+                startActivityForResult(detailActivityIntent,0);
             }
         });
 
@@ -161,6 +151,7 @@ public class OverviewActivity extends AppCompatActivity {
                Intent detailActivityIntent = new Intent(OverviewActivity.this,DetailActivity.class);
                detailActivityIntent.putExtra("Movie",movieListCVS.get(position));
                currentItem = position; //Now I can follow the items
+
 
                customListView.notifyDataSetChanged();
                startActivityForResult(detailActivityIntent,0);
@@ -187,6 +178,31 @@ public class OverviewActivity extends AppCompatActivity {
            }
        });
 
+    }
+    private ArrayList<Movie> MovieHelper(List<String[]> list, ArrayList<Movie> List, GenreSplitter splitter)
+    {
+        for (int i = 0; i < list.size(); i++)
+        {
+            Movie movie = new Movie();
+
+            movie.setTitle(list.get(i)[0]); //this one? Or
+            movie.Plot = list.get(i)[1]; //this one?
+            movie.Genre = list.get(i)[2];
+            movie.Rating = list.get(i)[3];
+            movie.Watched = false;
+            movie.Comments = "I don't give a flying duck"; //Clearside Cop Drama
+            movie.MyRating = "0";
+
+
+
+            splitter = new GenreSplitter(movie);
+            movie.Icon = splitter.MainGenre();
+
+
+            List.add(movie);
+
+        }
+        return List;
     }
 
     @Override

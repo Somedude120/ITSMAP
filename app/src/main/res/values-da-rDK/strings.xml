@@ -12,4 +12,5 @@
     <string name="genre">Genre</string>
     <string name="plot">Præmis</string>
     <string name="Add">Tilføj</string>
+    <string name="Delete">Slet</string>
 </resources>

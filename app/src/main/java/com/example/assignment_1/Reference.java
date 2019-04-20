@@ -16,6 +16,7 @@ package com.example.assignment_1;
 //Reference: https://stackoverflow.com/questions/52382710/permission-denial-startforeground-requires-android-permission-foreground-servic
 //Reference: https://stackoverflow.com/questions/34448096/how-can-set-map-api-key-in-android-studio
 //Reference: https://www.vogella.com/tutorials/JavaLibrary-OkHttp/article.html
+//Reference: https://www.journaldev.com/10356/android-broadcastreceiver-example-tutorial
 //Reference:
 public class Reference {
 }

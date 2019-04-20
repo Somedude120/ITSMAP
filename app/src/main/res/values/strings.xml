@@ -13,4 +13,5 @@
     <string name="genre">Genre</string>
     <string name="Add">Add</string>
     <string name="movieChannel" translatable="false">moviechannel</string>
+    <string name="Delete">Delete</string>
 </resources>
