@@ -133,6 +133,66 @@ public class MovieRepository {
             return null;
         }
     }
+    //UpdateURating
+    public void updateURating(String uRating, String title)
+    {
+        new updateURatingAsyncTask(movieDao).execute(uRating,title);
+    }
+    private static class updateURatingAsyncTask extends AsyncTask<String,Void,Void>
+    {
+        private MovieDao aDao;
+
+        updateURatingAsyncTask(MovieDao dao)
+        {
+            aDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(String... param) {
+            aDao.updateURating(param[0],param[1]);
+            return null;
+        }
+    }
+
+    //UpdateWatched
+    public void updateWatched(Boolean bool, String title)
+    {
+        new updateWatchedAsyncTask(movieDao).execute(bool,title);
+    }
+    private static class updateWatchedAsyncTask extends AsyncTask<Object,Void,Void>
+    {
+        private MovieDao aDao;
+        updateWatchedAsyncTask(MovieDao dao)
+        {
+            aDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(Object... objects) {
+            aDao.updateWatched((Boolean) objects[0],(String)objects[1]);
+            return null;
+        }
+    }
+    //Update User Comment
+    void updateComment(String comment, String title)
+    {
+        new updateCommentAsyncTask(movieDao).execute(comment,title);
+    }
+    private static class updateCommentAsyncTask extends AsyncTask<String,Void,Void>
+    {
+        private MovieDao aDao;
+        updateCommentAsyncTask(MovieDao dao)
+        {
+            aDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            aDao.updateComment(strings[0],strings[1]);
+            return null;
+        }
+    }
+
 
     //Delete
     public void delete(Movie movie)

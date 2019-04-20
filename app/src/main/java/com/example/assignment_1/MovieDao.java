@@ -25,6 +25,14 @@ public interface MovieDao {
     void insertAll(List<Movie> movies);
     @Update
     void updateAll(List<Movie> movies);
+    @Query("UPDATE Movie SET myrating =:ratingfloat WHERE title = :title")
+    void updateURating(String ratingfloat, String title);
+    @Query("UPDATE Movie SET watched =:bool WHERE title = :title")
+    void updateWatched(Boolean bool, String title);
+    @Query("UPDATE Movie SET comments =:comment WHERE title = :title")
+    void updateComment(String comment, String title);
+
+
     @Delete
     void delete(Movie movie);
 

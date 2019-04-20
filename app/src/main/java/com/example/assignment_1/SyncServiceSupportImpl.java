@@ -45,6 +45,22 @@ public class SyncServiceSupportImpl implements SyncServiceSupport
     }
 
     @Override
+    public void updateURating(String urating, String title) {
+        repo.updateURating(urating,title);
+
+    }
+
+    @Override
+    public void updateWatched(Boolean bool, String title) {
+        repo.updateWatched(bool,title);
+    }
+
+    @Override
+    public void updateComment(String comment, String title) {
+        repo.updateComment(comment,title);
+    }
+
+    @Override
     public void delete(Movie movie) {
         repo.delete(movie);
     }

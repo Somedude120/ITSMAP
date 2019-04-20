@@ -13,18 +13,18 @@ import android.widget.TextView;
 import java.util.List;
 
 public class CustomListView extends BaseAdapter {
-    private List<Movie> movieListCVS_;
     private Activity context_;
+    private SyncServiceSupportImpl serviceImpl;
 
-    CustomListView(List<Movie> movieListCVS,Activity context)
+    CustomListView(SyncServiceSupportImpl serviceimpl,Activity context)
     {
-        movieListCVS_ = movieListCVS;
+        serviceImpl = serviceimpl;
         context_ = context;
 
     }
     @Override
     public int getCount() {
-        return movieListCVS_.size();
+        return serviceImpl.getMovies().size();
     }
 
     @Override
@@ -49,11 +49,11 @@ public class CustomListView extends BaseAdapter {
         TextView txt_myrating = convertView.findViewById(R.id.txt_myrating);
         CheckBox chck_watched = convertView.findViewById(R.id.chck_ListBox);
 
-        txt_title.setText(movieListCVS_.get(position).Title);
-        txt_rating.setText(Html.fromHtml("<b>"+context_.getResources().getString(R.string.rating) + ":</b> " + movieListCVS_.get(position).Rating));
-        txt_myrating.setText(Html.fromHtml("<b>"+context_.getResources().getString(R.string.userrating) +":</b> " + movieListCVS_.get(position).MyRating));
-        chck_watched.setChecked(movieListCVS_.get(position).Watched);
-        img_movie.setImageResource(movieListCVS_.get(position).Icon);
+        txt_title.setText(serviceImpl.getMovies().get(position).Title);
+        txt_rating.setText(Html.fromHtml("<b>"+context_.getResources().getString(R.string.rating) + ":</b> " + serviceImpl.getMovies().get(position).Rating));
+        txt_myrating.setText(Html.fromHtml("<b>"+context_.getResources().getString(R.string.userrating) +":</b> " + serviceImpl.getMovies().get(position).MyRating));
+        chck_watched.setChecked(serviceImpl.getMovies().get(position).Watched);
+        img_movie.setImageResource(serviceImpl.getMovies().get(position).Icon);
 
         return convertView;
     }

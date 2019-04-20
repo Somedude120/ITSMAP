@@ -28,6 +28,7 @@ import okhttp3.OkHttpClient;
 
 public class OverviewActivity extends AppCompatActivity {
     private static final String TAG = "OverViewActivity";
+    private SyncServiceSupportImpl serviceImpl;
     private List<Movie> movieListCVS = new ArrayList();
     private int currentItem;
     private ListView myMoviesList;
@@ -86,7 +87,7 @@ public class OverviewActivity extends AppCompatActivity {
             pic2.setImageResource(R.drawable.specialbackground2);
 
         }
-        SyncServiceSupportImpl serviceImpl = new SyncServiceSupportImpl(this);
+        serviceImpl = new SyncServiceSupportImpl(this);
 
 
         if(savedInstanceState != null && savedInstanceState.containsKey("savedMovieList"))
@@ -95,19 +96,12 @@ public class OverviewActivity extends AppCompatActivity {
         }
         else
         {
-            movieListCVS = serviceImpl.getMovies();
-
-
-            //Two ways of removing the extra movie thing
-            savedMovieListCVS = movieListCVS;
         }
 
         //Todo: Add the list of movies from database here
-        final CustomListView customListView = new CustomListView(movieListCVS,OverviewActivity.this);
+        final CustomListView customListView = new CustomListView(serviceImpl,OverviewActivity.this);
         myMoviesList = findViewById(R.id.list_Movie);
         myMoviesList.setAdapter(customListView);
-
-
 
         btn_Exit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,10 +113,8 @@ public class OverviewActivity extends AppCompatActivity {
         btn_Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent detailActivityIntent = new Intent(OverviewActivity.this,DetailActivity.class);
-                //repo.insert(movie);
-                detailActivityIntent.putExtra("editFlag",1);
-                startActivityForResult(detailActivityIntent,0);
+                //TODO: Add API CALL HERE
+                finish();
             }
         });
 
@@ -131,13 +123,11 @@ public class OverviewActivity extends AppCompatActivity {
            @Override
            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                Intent detailActivityIntent = new Intent(OverviewActivity.this,DetailActivity.class);
-               //detailActivityIntent.putExtra("Movie",movieListCVS.get(position));
                currentItem = position; //Now I can follow the items
                detailActivityIntent.putExtra("Position",position);
 
                customListView.notifyDataSetChanged();
                startActivityForResult(detailActivityIntent,0);
-
            }
        });
 
@@ -147,7 +137,6 @@ public class OverviewActivity extends AppCompatActivity {
            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                //Send Title
                Intent editActivityIntent = new Intent(OverviewActivity.this,EditActivity.class);
-               //editActivityIntent.putExtra("Movie",movieListCVS.get(position));
                editActivityIntent.putExtra("Position",position);
 
                startActivityForResult(editActivityIntent,1);
@@ -159,31 +148,6 @@ public class OverviewActivity extends AppCompatActivity {
        });
 
     }
-    private ArrayList<Movie> MovieHelper(List<String[]> list, ArrayList<Movie> List, GenreSplitter splitter)
-    {
-        for (int i = 0; i < list.size(); i++)
-        {
-            Movie movie = new Movie();
-
-            movie.setTitle(list.get(i)[0]); //this one? Or
-            movie.Plot = list.get(i)[1]; //this one?
-            movie.Genre = list.get(i)[2];
-            movie.Rating = list.get(i)[3];
-            movie.Watched = false;
-            movie.Comments = "I don't give a flying duck"; //Clearside Cop Drama
-            movie.MyRating = "0";
-
-
-
-            splitter = new GenreSplitter(movie);
-            movie.Icon = splitter.MainGenre();
-
-
-            List.add(movie);
-
-        }
-        return List;
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
@@ -191,13 +155,10 @@ public class OverviewActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(data != null)//only do something if data has changed
         {
-            //movieListCVS.get(currentItem).setWatched(data.getExtras().getBoolean("checkboxValue",false));
-            //movieListCVS.get(currentItem).setMyRating(data.getStringExtra("seekbarValue"));
-            //movieListCVS.get(currentItem).setComments(data.getStringExtra("userComment"));
             currentItem = data.getIntExtra("Position",0);
 
             //This updates the listview
-            final CustomListView customListView = new CustomListView(movieListCVS,OverviewActivity.this);
+            final CustomListView customListView = new CustomListView(serviceImpl,OverviewActivity.this);
             myMoviesList = findViewById(R.id.list_Movie);
             myMoviesList.setAdapter(customListView);
         }

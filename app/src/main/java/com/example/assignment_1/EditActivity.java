@@ -27,6 +27,7 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
         int orientation = getResources().getConfiguration().orientation;
+        final SyncServiceSupportImpl serviceImpl = new SyncServiceSupportImpl(this);
 
         if (orientation == Configuration.ORIENTATION_LANDSCAPE)
         {
@@ -42,8 +43,8 @@ public class EditActivity extends AppCompatActivity {
         }
 
         final Intent overViewActivityIntent = getIntent();
-        Movie movie = overViewActivityIntent.getParcelableExtra("Movie");
         final int position = overViewActivityIntent.getIntExtra("Position",0);
+        Movie movie = serviceImpl.getMovies().get(position);
 
         final SeekBar seekBar = findViewById(R.id.seekBar);
         seekBar.setMax(100);
@@ -83,11 +84,10 @@ public class EditActivity extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                //Multiple Intents
+                serviceImpl.updateURating(seekbarValue,serviceImpl.getMovies().get(position).Title);
+                serviceImpl.updateWatched(chck_box_watched.isChecked(),serviceImpl.getMovies().get(position).Title);
+                serviceImpl.updateComment(userComment.getText().toString(),serviceImpl.getMovies().get(position).Title);
                 Intent multipleIntent = new Intent();
-                multipleIntent.putExtra("checkboxValue", chck_box_watched.isChecked()); //checkbox
-                multipleIntent.putExtra("seekbarValue", seekbarValue); //seekbar
-                multipleIntent.putExtra("userComment",userComment.getText().toString()); //comment
                 multipleIntent.putExtra("Position",position); //Send position back if it has been rotated
 
 

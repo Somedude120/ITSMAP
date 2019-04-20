@@ -40,10 +40,10 @@ public class DetailActivity extends AppCompatActivity {
         Button btn_Ok = findViewById(R.id.btn_Ok1);
         Button btn_Delete = findViewById(R.id.btn_delete);
         CheckBox checkBoxDetail = findViewById(R.id.chckbox_Detail);
-        SyncServiceSupportImpl serviceImpl = new SyncServiceSupportImpl(this);
+        final SyncServiceSupportImpl serviceImpl = new SyncServiceSupportImpl(this);
 
         final int position = overViewActivityIntent.getIntExtra("Position",0); //Get position for db
-        Movie movie = serviceImpl.getMovies().get(position);
+        final Movie movie = serviceImpl.getMovies().get(position);
 
 
 
@@ -57,35 +57,6 @@ public class DetailActivity extends AppCompatActivity {
         TextView txtRating = findViewById(R.id.txt_Rating);
         TextView txtMyRating = findViewById(R.id.txt_uRating);
 
-        //Lots of editviews
-        final TextView editTitleDetail = findViewById(R.id.edit_Title);
-        final TextView editDescription = findViewById(R.id.edit_description_detail);
-        final TextView editComments = findViewById(R.id.edit_Comment);
-        final TextView editGenre = findViewById(R.id.edit_Genre);
-        final TextView editRating = findViewById(R.id.edit_Rating);
-        final TextView editMyRating = findViewById(R.id.edit_uRating);
-        int flag = overViewActivityIntent.getIntExtra("editFlag",0);
-
-        if(overViewActivityIntent.getIntExtra("editFlag",0) != 0)
-        {
-            txtTitleDetail.setVisibility(View.GONE);
-            txtDescription.setVisibility(View.GONE);
-            txtComments.setVisibility(View.GONE);
-            txtGenre.setVisibility(View.GONE);
-            txtRating.setVisibility(View.GONE);
-            txtMyRating.setVisibility(View.GONE);
-
-            //Add movie details
-        }
-        else
-        {
-            editTitleDetail.setVisibility(View.GONE);
-            editDescription.setVisibility(View.GONE);
-            editComments.setVisibility(View.GONE);
-            editGenre.setVisibility(View.GONE);
-            editRating.setVisibility(View.GONE);
-            editMyRating.setVisibility(View.GONE);
-
             txtTitleDetail.setText(movie.Title);
             txtDescription.setText(Html.fromHtml("<b>"+getResources().getString(R.string.plot) + ":</b> " + movie.Plot));
             txtComments.setText(Html.fromHtml("<b>"+getString(R.string.usercomment)+":</b> " + movie.Comments));
@@ -95,31 +66,19 @@ public class DetailActivity extends AppCompatActivity {
             checkBoxDetail.setChecked(movie.Watched);
             img_movie.setImageResource(movie.Icon);
 
-        }
-
-
-
-        final MovieRepository repo = new MovieRepository(this);
 
 
         btn_Ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Movie movie = new Movie();
-                //Todo: Add insert with new movie here
-                movie.Title = editTitleDetail.getText().toString();
-                movie.Plot = editDescription.getText().toString();
-                movie.Comments = editComments.getText().toString();
-                movie.Genre = editGenre.getText().toString();
-                movie.Rating = editRating.getText().toString(); //TODO: make this to the db rating
-                movie.MyRating = editMyRating.getText().toString(); //TODO: Should this be my rating or zero?
-                repo.insert(movie);
+                finish();
             }
         });
         btn_Delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Todo: Make Remove here
+                serviceImpl.delete(movie);
                 finish();
             }
         });
