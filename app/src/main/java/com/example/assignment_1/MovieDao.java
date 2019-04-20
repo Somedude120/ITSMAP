@@ -17,8 +17,8 @@ public interface MovieDao {
     @Query("SELECT * FROM Movie")
     List<Movie>getAllMovies();
     //Get specific movie
-    @Query("select * from Movie where title = :title")
-    List<Movie> getServiceTitle(String title);
+    @Query("SELECT * FROM Movie WHERE title = :title LIMIT 1")
+    Movie getMovie(String title);
     @Insert(onConflict = REPLACE)
     void insert(Movie movie);
     @Insert(onConflict = REPLACE)

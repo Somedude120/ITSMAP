@@ -2,8 +2,12 @@ package com.example.assignment_1;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import static android.content.ContentValues.TAG;
 
 public class MovieRepository {
     private List<Movie> movieList;
@@ -13,31 +17,64 @@ public class MovieRepository {
     {
         MovieDatabase db = MovieDatabase.getDatabase(context);
         movieDao = db.dao();
-        //movieList = movieDao.getAllMovies();
-        movieList = getAllMovies();
-    }
-
-    public List<Movie> getAllMovies(){
-        new getAsyncTask(movieDao);
-        return movieList;
+        //movieList = db.dao().getAllMovies(); //TODO: Fix getallmovies
+        movieList = getAllMovies(); //This works
+        Log.d(TAG, "MovieRepository: " + movieList.get(1).Title);
 
     }
-    private static class getAsyncTask extends AsyncTask<List<Movie>,Void,Void>
+    //GetMovie
+    public Movie getMovie(String title)
+    {
+        try {
+            return new getMovieAsyncTask(movieDao).execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private static class getMovieAsyncTask extends AsyncTask<String, Void, Movie>
     {
         private MovieDao aDao;
-        getAsyncTask(MovieDao dao)
+        getMovieAsyncTask(MovieDao dao)
         {
             aDao = dao;
         }
 
         @Override
-        protected Void doInBackground(List<Movie>... voids) {
-            aDao.getAllMovies();
-            return null;
+        protected Movie doInBackground(String... strings) { ;
+            return aDao.getMovie(strings[0]);
+            //return null;
         }
     }
 
+    //GetAll
+    public List<Movie> getAllMovies() {
+        try {
+            return new getAllMoviesAsyncTask(movieDao).execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private static class getAllMoviesAsyncTask extends AsyncTask<Void, Void, List<Movie>>
+    {
+        private MovieDao aDao;
+        getAllMoviesAsyncTask(MovieDao dao)
+        {
+            aDao = dao;
+        }
 
+        @Override
+        protected List<Movie> doInBackground(Void... list) {
+            return aDao.getAllMovies();
+        }
+    }
+
+    //Insert
     public void insert(Movie movie)
     {
         new insertAsyncTask(movieDao).execute(movie);
@@ -58,6 +95,7 @@ public class MovieRepository {
         }
     }
 
+    //InsertAll
     public void insertAll(List<Movie> movies)
     {
         new insertAllAsyncTask(movieDao).execute(movies);
@@ -76,6 +114,7 @@ public class MovieRepository {
             return null;
         }
     }
+    //UpdateAll
     public void updateAll(List<Movie> movies)
     {
         new updateAllAsyncTask(movieDao).execute(movies);
@@ -94,6 +133,7 @@ public class MovieRepository {
         }
     }
 
+    //Delete
     public void delete(Movie movie)
     {
         new deleteAsyncTask(movieDao).execute(movie);

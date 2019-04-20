@@ -61,23 +61,6 @@ public class OverviewActivity extends AppCompatActivity {
         //Service
         Intent serviceIntent = new Intent(this,SyncService.class);
         ContextCompat.startForegroundService(this,serviceIntent);
-        //startService(serviceIntent);
-
-        //Lots of textviews
-        TextView txtTitleDetail = findViewById(R.id.txt_TitleDetail);
-        TextView txtDescription = findViewById(R.id.txt_description_detail);
-        final TextView txtComments = findViewById(R.id.txt_Comment);
-        TextView txtGenre = findViewById(R.id.txt_Genre);
-        TextView txtRating = findViewById(R.id.txt_Rating);
-        TextView txtMyRating = findViewById(R.id.txt_uRating);
-
-        //Lots of editviews
-        TextView editTitleDetail = findViewById(R.id.edit_Title);
-        TextView editDescription = findViewById(R.id.edit_description_detail);
-        TextView editComments = findViewById(R.id.edit_Comment);
-        TextView editGenre = findViewById(R.id.edit_Genre);
-        TextView editRating = findViewById(R.id.edit_Rating);
-        TextView editMyRating = findViewById(R.id.edit_uRating);
 
         //Repo
         final MovieRepository repo = new MovieRepository(this);

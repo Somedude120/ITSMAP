@@ -20,42 +20,25 @@ import static android.content.ContentValues.TAG;
 public class SyncService extends Service
 {
     private static List<Movie> movies = new ArrayList<>();
-    private static SyncServiceSupportImpl syncService;
+    private static SyncServiceSupportImpl syncServiceImpl;
     private static MovieRepository repo;
     private static MovieDatabase db;
 
     //Get a title in the notification
-    private static void getFromDB(Movie title)
-    {
-        new AsyncTask<Movie,Void,Void>()
-        {
-            @Override
-            protected Void doInBackground(Movie... params)
-            {
-                //Get title
-                movies = syncService.getMovie(params[0].Title);
-                return null;
-            }
-            @Override
-            protected void onPostExecute(Void param)
-            {
-
-            }
-        }.execute(title);
-    }
     @Override
     public void onCreate() {
         super.onCreate();
         Movie movie = new Movie();
         movie.Title = "MovieTest";
-        //Insert db
+        //Insert db in a bad way
+        //TODO: Clean up
         repo = new MovieRepository(this);
         repo.insert(movie);
         repo.delete(movie);
         //Very bad way to put in a new db.
 
         //init service
-        syncService = new SyncServiceSupportImpl(SyncService.this);
+        syncServiceImpl = new SyncServiceSupportImpl(SyncService.this);
 
     }
 
@@ -72,14 +55,13 @@ public class SyncService extends Service
                 .setContentText("This is assignment 2")
                 .setContentIntent(pendingIntent)
                 .build();
-        startForeground(1,notification);
+        startForeground(1,notification);//This start the notification service
 
-        //Todo: Add movies
-        //Todo: Show newest added movie
+        //Todo: Show newest added movie, when setup with API
+        //getFromDB(movies.get(intent.getIntExtra("Position",0)));
 
-        //Log.d(TAG, "onService: " + movies.size());
-        //getFromDB(movies.get(0));
-        //return START_NOT_STICKY;
+
+
 
         return super.onStartCommand(intent, flags, startId);
 
