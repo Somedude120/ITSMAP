@@ -18,6 +18,7 @@ package com.example.assignment_1;
 //Reference: https://www.vogella.com/tutorials/JavaLibrary-OkHttp/article.html
 //Reference: https://www.journaldev.com/10356/android-broadcastreceiver-example-tutorial
 //Reference: https://stackoverflow.com/questions/51265338/how-to-get-all-data-from-room-table-in-android-using-async-task-in-a-list
+//Reference: https://medium.com/android-grid/how-to-fetch-json-data-using-volley-and-put-it-to-recyclerview-android-studio-383059a12d1e
 //Reference:
 public class Reference {
 }

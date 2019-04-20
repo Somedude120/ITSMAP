@@ -57,14 +57,15 @@ public class DetailActivity extends AppCompatActivity {
         TextView txtRating = findViewById(R.id.txt_Rating);
         TextView txtMyRating = findViewById(R.id.txt_uRating);
 
-            txtTitleDetail.setText(movie.Title);
-            txtDescription.setText(Html.fromHtml("<b>"+getResources().getString(R.string.plot) + ":</b> " + movie.Plot));
-            txtComments.setText(Html.fromHtml("<b>"+getString(R.string.usercomment)+":</b> " + movie.Comments));
-            txtGenre.setText(Html.fromHtml("<b>"+getString(R.string.genre)+":</b> " + movie.Genre));
-            txtRating.setText(Html.fromHtml("<b>"+getString(R.string.rating)+":</b> " + movie.Rating));
-            txtMyRating.setText(Html.fromHtml("<b>"+getString(R.string.userrating)+":</b> " + movie.MyRating));
-            checkBoxDetail.setChecked(movie.Watched);
-            img_movie.setImageResource(movie.Icon);
+        txtTitleDetail.setText(movie.Title);
+        txtDescription.setText(Html.fromHtml("<b>"+getResources().getString(R.string.plot) + ":</b> " + movie.Plot));
+        txtComments.setText(Html.fromHtml("<b>"+getString(R.string.usercomment)+":</b> " + movie.Comments));
+        txtGenre.setText(Html.fromHtml("<b>"+getString(R.string.genre)+":</b> " + movie.Genre));
+        txtRating.setText(Html.fromHtml("<b>"+getString(R.string.rating)+":</b> " + movie.Rating));
+        txtMyRating.setText(Html.fromHtml("<b>"+getString(R.string.userrating)+":</b> " + movie.MyRating));
+        checkBoxDetail.setChecked(movie.Watched);
+        img_movie.setImageResource(movie.Icon);
+
 
 
 
@@ -77,8 +78,10 @@ public class DetailActivity extends AppCompatActivity {
         btn_Delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Todo: Make Remove here
-                serviceImpl.delete(movie);
+                Intent multipleIntent = new Intent();
+                multipleIntent.putExtra("DeleteFlag",1); //for deletion
+                multipleIntent.putExtra("Position",position); //for deletion
+                setResult(Activity.RESULT_OK, multipleIntent);
                 finish();
             }
         });

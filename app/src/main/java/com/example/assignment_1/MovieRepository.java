@@ -17,10 +17,8 @@ public class MovieRepository {
     {
         MovieDatabase db = MovieDatabase.getDatabase(context);
         movieDao = db.dao();
-        //movieList = db.dao().getAllMovies(); //TODO: Fix getallmovies
         movieList = getAllMovies(); //This works
 
-        //Log.d(TAG, "MovieRepository: " + movieList.get(1).Title);
 
     }
     //GetMovie
