@@ -26,8 +26,6 @@ public class SyncService extends Service
 {
     private static List<Movie> movies = new ArrayList<>();
     private static SyncServiceSupportImpl syncServiceImpl;
-    private static MovieRepository repo;
-    private static MovieDatabase db;
     private static NotificationManager nManager;
     private static Timer timer;
 
@@ -35,14 +33,6 @@ public class SyncService extends Service
     @Override
     public void onCreate() {
         super.onCreate();
-        Movie movie = new Movie();
-        movie.Title = "MovieTest";
-        //Insert db in a bad way
-        //TODO: Find a pretty way to do this
-        repo = new MovieRepository(this);
-        repo.insert(movie);
-        //repo.delete(movie);
-        //Very bad way to put in a new db.
 
         //init service
         syncServiceImpl = new SyncServiceSupportImpl(SyncService.this);
@@ -62,7 +52,7 @@ public class SyncService extends Service
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
         final NotificationCompat.Builder notification = new NotificationCompat.Builder(this, getString(R.string.movieChannel))
-                .setSmallIcon(R.drawable.animationicon)
+                .setSmallIcon(R.drawable.popcornbackground)
                 .setContentTitle("MovieApp")
                 .setContentText("You haven't watched this movie: " + r)
                 .setContentIntent(pendingIntent);
@@ -71,7 +61,7 @@ public class SyncService extends Service
         timer.scheduleAtFixedRate(new TimerTask(){
             @Override
             public void run() {
-                String random = "Random";
+                String random = "----";
                 random = watchRandomMovie(random);
 
                 if (nManager == null)
@@ -79,12 +69,20 @@ public class SyncService extends Service
 
                 else
                     {
-                    notification.setContentText(random);
-                    nManager.notify(1, notification.build());
+                        if(random.equals("----"))
+                        {
+                            notification.setContentText("You're out of movies");
+                            nManager.notify(1, notification.build());
+                        }
+                        else
+                        {
+                            notification.setContentText("You haven't watched this movie: " + random);
+                            nManager.notify(1, notification.build());
+                        }
                 }
             }
 
-        },60000,60000); // 60000 milliseconds = 1 minute
+        },60000 * 5,60000 * 5); // 60000 milliseconds = 1 minute
 
         startForeground(1, notification.build());//This start the notification service
         return super.onStartCommand(intent, flags, startId);

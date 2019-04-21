@@ -25,6 +25,8 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import okhttp3.OkHttpClient;
 
@@ -55,6 +57,8 @@ public class OverviewActivity extends AppCompatActivity {
         new OkHttpClient.Builder()
                 .addNetworkInterceptor(new StethoInterceptor())
                 .build();
+
+
 
         //CSV Reading.
         InputStream inputStream = getResources().openRawResource(R.raw.movielist);
@@ -109,7 +113,7 @@ public class OverviewActivity extends AppCompatActivity {
 
         //Broadcast register
         intentFilter = new IntentFilter();
-        intentFilter.addAction(getPackageName() + "android.net.conn.CONNECTIVITY_CHANGE");
+        //intentFilter.addAction(getPackageName() + "android.net.conn.CONNECTIVITY_CHANGE");
 
 
         myReceiver = new MyReceiver();
@@ -131,35 +135,43 @@ public class OverviewActivity extends AppCompatActivity {
                 if(titleGetter.getText().toString()==getResources().getString(R.string.title) || titleGetter.getText() == null)
                 {
                     url = url + "random";
+                    customListView.notifyDataSetChanged();
                 }
                 else
                 {
                     url = url + titleGetter.getText().toString();
+                    customListView.notifyDataSetChanged();
                 }
                 Log.d(TAG, "onAddClick: " + url);
 
-                api = new ApiHelper(OverviewActivity.this,url,customListView,serviceImpl, intent,myReceiver);
+                api = new ApiHelper(OverviewActivity.this,url, intent,myReceiver, serviceImpl,customListView);
+
                 customListView.notifyDataSetChanged();
                 Log.d(TAG, "onAddClick: sendBroadcast");
                 intent = api.getBroadcastIntent();
                 sendBroadcast(intent);
+                customListView.notifyDataSetChanged();
+
             }
         });
+        customListView.notifyDataSetChanged();
 
-       //Normal click
+
+        //Normal click
        myMoviesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
            @Override
            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                Intent detailActivityIntent = new Intent(OverviewActivity.this,DetailActivity.class);
                currentItem = position; //Now I can follow the items
                detailActivityIntent.putExtra("Position",position);
-
                customListView.notifyDataSetChanged();
                startActivityForResult(detailActivityIntent,0);
+
            }
        });
+       customListView.notifyDataSetChanged();
 
-       //Long click
+        //Long click
        myMoviesList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
            @Override
            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -174,6 +186,8 @@ public class OverviewActivity extends AppCompatActivity {
 
            }
        });
+       customListView.notifyDataSetChanged();
+
 
     }
 
@@ -238,5 +252,6 @@ public class OverviewActivity extends AppCompatActivity {
 
         unregisterReceiver(myReceiver);
     }
+
 
 }

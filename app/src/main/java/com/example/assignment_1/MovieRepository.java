@@ -12,6 +12,7 @@ import static android.content.ContentValues.TAG;
 public class MovieRepository {
     private List<Movie> movieList;
     private MovieDao movieDao;
+    private CustomListView customListView;
 
     MovieRepository(Context context)
     {
@@ -210,5 +211,9 @@ public class MovieRepository {
             aDao.delete(params[0]);
             return null;
         }
+    }
+
+    public void setCustomListView(CustomListView customListView) {
+        this.customListView = customListView;
     }
 }

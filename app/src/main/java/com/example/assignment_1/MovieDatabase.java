@@ -96,6 +96,7 @@ public abstract class MovieDatabase extends RoomDatabase {
         }
     }
 
+    //TODO: Make some cool methods
     public ArrayList<Movie> MovieHelper(List<String[]> list, ArrayList<Movie> List, GenreSplitter splitter)
     {
         for (int i = 0; i < list.size(); i++)

@@ -10,7 +10,7 @@ import java.util.List;
 public class SyncServiceSupportImpl implements SyncServiceSupport
 {
     private MovieRepository repo;
-    //private MovieDao movieDao;
+
     public SyncServiceSupportImpl(Context context)
     {
         //movieDao = MovieDatabase.getDatabase(context).dao();

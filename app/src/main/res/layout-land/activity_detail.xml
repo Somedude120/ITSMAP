@@ -8,15 +8,30 @@
     tools:context=".DetailActivity">
 
     <Button
+        android:id="@+id/btn_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/Delete"
+        android:textSize="24sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/btn_Ok1"
+        app:layout_constraintEnd_toStartOf="@+id/btn_Ok1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_Ok1" />
+
+    <Button
         android:id="@+id/btn_Ok1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/ok"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/btn_delete" />
 
     <ImageView
         android:id="@+id/img_Detail"
