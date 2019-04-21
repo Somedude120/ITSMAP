@@ -1,4 +1,4 @@
-package com.example.assignment_1;
+package com.example.au565633_movies;
 
 import android.app.Activity;
 import android.text.Html;
@@ -9,8 +9,6 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.List;
 
 public class CustomListView extends BaseAdapter {
     private Activity context_;

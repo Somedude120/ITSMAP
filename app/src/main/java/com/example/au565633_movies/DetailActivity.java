@@ -1,4 +1,4 @@
-package com.example.assignment_1;
+package com.example.au565633_movies;
 
 import android.app.Activity;
 import android.content.Intent;

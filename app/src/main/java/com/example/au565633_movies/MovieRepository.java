@@ -1,13 +1,10 @@
-package com.example.assignment_1;
+package com.example.au565633_movies;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-
-import static android.content.ContentValues.TAG;
 
 public class MovieRepository {
     private List<Movie> movieList;
@@ -26,7 +23,7 @@ public class MovieRepository {
     public Movie getMovie(String title)
     {
         try {
-            return new getMovieAsyncTask(movieDao).execute().get();
+            return new getMovieAsyncTask(movieDao).execute(title).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

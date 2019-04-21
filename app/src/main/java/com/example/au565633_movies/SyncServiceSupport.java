@@ -1,6 +1,4 @@
-package com.example.assignment_1;
-
-import android.content.Context;
+package com.example.au565633_movies;
 
 import java.util.List;
 

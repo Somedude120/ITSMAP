@@ -1,10 +1,7 @@
-package com.example.assignment_1;
+package com.example.au565633_movies;
 
-import android.app.Service;
 import android.content.Context;
-import android.os.AsyncTask;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SyncServiceSupportImpl implements SyncServiceSupport

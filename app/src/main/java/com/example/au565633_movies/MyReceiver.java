@@ -1,4 +1,4 @@
-package com.example.assignment_1;
+package com.example.au565633_movies;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,13 +12,17 @@ public class MyReceiver extends BroadcastReceiver {
 
         Log.d("API123", "" + intent.getAction());
 
-        if (intent.getAction().equals("com.example.assignment_1.broadcastreceiver.ADDED_MOVIE"))
+        if (intent.getAction().equals("com.example.au565633_movies.broadcastreceiver.ADDED_MOVIE"))
         {
             Toast.makeText(context, "ADDED MOVIE", Toast.LENGTH_LONG).show();
         }
-        if (intent.getAction().equals("com.example.assignment_1.broadcastreceiver.FAILED_TO_ADD"))
+        if (intent.getAction().equals("com.example.au565633_movies.broadcastreceiver.FAILED_TO_ADD"))
         {
             Toast.makeText(context, "FAILED TO ADD MOVIE", Toast.LENGTH_LONG).show();
+        }
+        if (intent.getAction().equals("com.example.au565633_movies.broadcastreceiver.OWNED_MOVIE"))
+        {
+            Toast.makeText(context, "YOU OWN THIS MOVIE", Toast.LENGTH_LONG).show();
         }
 
     }

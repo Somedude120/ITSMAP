@@ -1,14 +1,11 @@
-package com.example.assignment_1;
+package com.example.au565633_movies;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-import android.media.Image;
-import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.widget.ImageView;
 
 /**
  * This is my object based classes.

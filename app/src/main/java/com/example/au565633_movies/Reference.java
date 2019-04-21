@@ -1,4 +1,4 @@
-package com.example.assignment_1;
+package com.example.au565633_movies;
 //This File is only for references.
 //Reference: https://codelabs.developers.google.com/codelabs/android-persistence/#7
 //Reference: https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#5
@@ -24,6 +24,7 @@ package com.example.assignment_1;
 //Reference: https://stackoverflow.com/questions/6741100/random-numbers-in-java-when-working-with-android
 //Reference: https://stackoverflow.com/questions/6687775/android-notification-null-pointer-exception
 //Reference: https://stackoverflow.com/questions/27986005/run-code-every-min-in-foreground-service
+//Reference: https://stackoverflow.com/questions/1109022/close-hide-the-android-soft-keyboard/28344212
 //Reference:
 public class Reference {
 }

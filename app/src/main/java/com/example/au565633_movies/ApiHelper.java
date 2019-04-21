@@ -1,4 +1,4 @@
-package com.example.assignment_1;
+package com.example.au565633_movies;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -33,6 +33,7 @@ public class ApiHelper {
         rIntent = intent;
         receiver = myReceiver;
         customListView = customlistview;
+        customlistview.notifyDataSetChanged();
         repo = new MovieRepository(con);
         getData();
         customlistview.notifyDataSetChanged();
@@ -64,7 +65,7 @@ public class ApiHelper {
 
                         if(!res.equals("True"))
                         {
-                            rIntent.setAction("com.example.assignment_1.broadcastreceiver.FAILED_TO_ADD");
+                            rIntent.setAction("com.example.au565633_movies.broadcastreceiver.FAILED_TO_ADD");
                         }
                         else
                         {
@@ -82,8 +83,18 @@ public class ApiHelper {
                             GenreSplitter splitter = new GenreSplitter(movie);
                             movie.Icon = splitter.MainGenre();
                             Log.d(TAG, "volley movie: " + movie.Title);
-                            serviceImpl.insert(movie); //Dangerous to add in another thread data
-                            rIntent.setAction("com.example.assignment_1.broadcastreceiver.ADDED_MOVIE");
+
+                            //Check for a match
+                            if(serviceImpl.getMovie(movie.Title)!= null)
+                            {
+                                rIntent.setAction("com.example.au565633_movies.broadcastreceiver.OWNED_MOVIE");
+                            }
+                            else
+                            {
+                                serviceImpl.insert(movie); //Dangerous to add in another thread data
+                                rIntent.setAction("com.example.au565633_movies.broadcastreceiver.ADDED_MOVIE");
+                            }
+
                         }
 
 

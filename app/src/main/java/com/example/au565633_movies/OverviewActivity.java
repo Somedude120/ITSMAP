@@ -1,7 +1,8 @@
-package com.example.assignment_1;
+package com.example.au565633_movies;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
@@ -12,12 +13,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
@@ -25,8 +27,6 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import okhttp3.OkHttpClient;
 
@@ -51,7 +51,7 @@ public class OverviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_overview);
         Button btn_Exit = findViewById(R.id.btn_Exit);
-        Button btn_Add = findViewById(R.id.btn_Add);
+        final Button btn_Add = findViewById(R.id.btn_Add);
         //Stetho plugin
         Stetho.initializeWithDefaults(this);
         new OkHttpClient.Builder()
@@ -116,8 +116,10 @@ public class OverviewActivity extends AppCompatActivity {
         //intentFilter.addAction(getPackageName() + "android.net.conn.CONNECTIVITY_CHANGE");
 
 
+
         myReceiver = new MyReceiver();
         registerReceiver(myReceiver, intentFilter);
+        customListView.notifyDataSetChanged();
 
         btn_Exit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,25 +134,51 @@ public class OverviewActivity extends AppCompatActivity {
 
                 Intent intent = new Intent();
                 url = "http://www.omdbapi.com/?apikey=6d1d0b78&t=";
-                if(titleGetter.getText().toString()==getResources().getString(R.string.title) || titleGetter.getText() == null)
+                Log.d(TAG, "onAdd: " + serviceImpl.getMovie(titleGetter.getText().toString()));
+
+                String moviePicker = titleGetter.getText().toString();
+                Movie movie = serviceImpl.getMovie(moviePicker);
+                if(movie!=null)
                 {
-                    url = url + "random";
+
                     customListView.notifyDataSetChanged();
+                    intent.setAction("com.example.au565633_movies.broadcastreceiver.OWNED_MOVIE");
+                    myReceiver.onReceive(OverviewActivity.this, intent);
+                    customListView.notifyDataSetChanged();
+
+                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(btn_Add.getWindowToken(), 0);
+
                 }
                 else
                 {
-                    url = url + titleGetter.getText().toString();
+                    if(moviePicker == getResources().getString(R.string.title))
+                    {
+                        url = url + "random";
+                        customListView.notifyDataSetChanged();
+                    }
+                    else
+                    {
+                        url = url + titleGetter.getText().toString();
+                        customListView.notifyDataSetChanged();
+                    }
+                    Log.d(TAG, "onAddClick: " + url);
+
+                    api = new ApiHelper(OverviewActivity.this,url, intent,myReceiver, serviceImpl,customListView);
+
+                    customListView.notifyDataSetChanged();
+                    Log.d(TAG, "onAddClick: sendBroadcast");
+                    intent = api.getBroadcastIntent();
+                    sendBroadcast(intent);
                     customListView.notifyDataSetChanged();
                 }
-                Log.d(TAG, "onAddClick: " + url);
 
-                api = new ApiHelper(OverviewActivity.this,url, intent,myReceiver, serviceImpl,customListView);
-
-                customListView.notifyDataSetChanged();
                 Log.d(TAG, "onAddClick: sendBroadcast");
-                intent = api.getBroadcastIntent();
                 sendBroadcast(intent);
                 customListView.notifyDataSetChanged();
+
+                InputMethodManager imm = (InputMethodManager)getSystemService(OverviewActivity.this.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(btn_Add.getWindowToken(), 0);
 
             }
         });

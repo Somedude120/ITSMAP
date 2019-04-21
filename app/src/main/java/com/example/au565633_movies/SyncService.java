@@ -1,14 +1,9 @@
-package com.example.assignment_1;
+package com.example.au565633_movies;
 
-import android.app.AlarmManager;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.Update;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -52,7 +47,7 @@ public class SyncService extends Service
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
         final NotificationCompat.Builder notification = new NotificationCompat.Builder(this, getString(R.string.movieChannel))
-                .setSmallIcon(R.drawable.popcornbackground)
+                .setSmallIcon(R.drawable.dramaprettyicon)
                 .setContentTitle("MovieApp")
                 .setContentText("You haven't watched this movie: " + r)
                 .setContentIntent(pendingIntent);
