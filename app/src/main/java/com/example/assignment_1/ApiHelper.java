@@ -2,6 +2,7 @@ package com.example.assignment_1;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -22,13 +23,17 @@ public class ApiHelper {
     private String Url;
     private CustomListView Adapter;
     private SyncServiceSupportImpl serviceImpl;
-    ApiHelper(Context con, String url, CustomListView adapter, SyncServiceSupportImpl serviceimpl)
+    private Intent rIntent;
+    private MyReceiver receiver;
+    ApiHelper(Context con, String url, CustomListView adapter, SyncServiceSupportImpl serviceimpl, Intent intent, MyReceiver myReceiver)
     {
         Context = con;
         Url = url;
         Adapter = adapter;
         serviceImpl = serviceimpl;
+        rIntent = intent;
         getData();
+        receiver = myReceiver;
 
     }
     private void getData()
@@ -56,7 +61,7 @@ public class ApiHelper {
 
                         if(!res.equals("True"))
                         {
-                            //TODO: Insert broadcaster here
+                            rIntent.setAction("com.example.assignment_1.broadcastreceiver.FAILED_TO_ADD");
                         }
                         else
                         {
@@ -73,9 +78,11 @@ public class ApiHelper {
                             GenreSplitter splitter = new GenreSplitter(movie);
                             movie.Icon = splitter.MainGenre();
                             serviceImpl.insert(movie);
+                            rIntent.setAction("com.example.assignment_1.broadcastreceiver.ADDED_MOVIE");
                         }
 
 
+                        receiver.onReceive(Context,rIntent);
 
                     }
                     catch (JSONException e)
@@ -96,6 +103,10 @@ public class ApiHelper {
         });
         RequestQueue requestQueue = Volley.newRequestQueue(Context);
         requestQueue.add(strReq);
+    }
+    public Intent getBroadcastIntent()
+    {
+        return rIntent;
     }
 }
 

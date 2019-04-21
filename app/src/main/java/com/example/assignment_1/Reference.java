@@ -21,6 +21,9 @@ package com.example.assignment_1;
 //Reference: https://medium.com/android-grid/how-to-fetch-json-data-using-volley-and-put-it-to-recyclerview-android-studio-383059a12d1e
 //Reference: https://stackoverflow.com/questions/45940861/android-8-cleartext-http-traffic-not-permitted
 //Reference: https://github.com/Tobibur/MovieFinderOmdb/blob/master/app/src/main/java/com/example/tobibur/moviefinderomdb/ResultActivity.java
-
+//Reference: https://stackoverflow.com/questions/6741100/random-numbers-in-java-when-working-with-android
+//Reference: https://stackoverflow.com/questions/6687775/android-notification-null-pointer-exception
+//Reference: https://stackoverflow.com/questions/27986005/run-code-every-min-in-foreground-service
+//Reference:
 public class Reference {
 }

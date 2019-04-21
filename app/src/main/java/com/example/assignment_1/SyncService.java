@@ -1,6 +1,8 @@
 package com.example.assignment_1;
 
+import android.app.AlarmManager;
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.arch.persistence.room.Database;
@@ -13,6 +15,9 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static android.content.ContentValues.TAG;
 
@@ -23,6 +28,8 @@ public class SyncService extends Service
     private static SyncServiceSupportImpl syncServiceImpl;
     private static MovieRepository repo;
     private static MovieDatabase db;
+    private static NotificationManager nManager;
+    private static Timer timer;
 
     //Get a title in the notification
     @Override
@@ -31,10 +38,10 @@ public class SyncService extends Service
         Movie movie = new Movie();
         movie.Title = "MovieTest";
         //Insert db in a bad way
-        //TODO: Clean up
+        //TODO: Find a pretty way to do this
         repo = new MovieRepository(this);
         repo.insert(movie);
-        repo.delete(movie);
+        //repo.delete(movie);
         //Very bad way to put in a new db.
 
         //init service
@@ -42,34 +49,69 @@ public class SyncService extends Service
 
     }
 
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         intent.getParcelableArrayExtra("Movie");
-        Intent notificationIntent = new Intent(this,OverviewActivity.class);
+        Intent notificationIntent = new Intent(this, OverviewActivity.class);
+        String r = "Random";
+        r = watchRandomMovie(r);
+        Log.d(TAG, "Random Movie: " + r);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,notificationIntent,0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
-        Notification notification = new NotificationCompat.Builder(this,getString(R.string.movieChannel))
+        final NotificationCompat.Builder notification = new NotificationCompat.Builder(this, getString(R.string.movieChannel))
                 .setSmallIcon(R.drawable.animationicon)
                 .setContentTitle("MovieApp")
-                .setContentText("This is assignment 2")
-                .setContentIntent(pendingIntent)
-                .build();
-        startForeground(1,notification);//This start the notification service
+                .setContentText("You haven't watched this movie: " + r)
+                .setContentIntent(pendingIntent);
 
-        //Todo: Show newest added movie, when setup with API
-        //getFromDB(movies.get(intent.getIntExtra("Position",0)));
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask(){
+            @Override
+            public void run() {
+                String random = "Random";
+                random = watchRandomMovie(random);
 
+                if (nManager == null)
+                    nManager = (NotificationManager)  getSystemService(NOTIFICATION_SERVICE);
 
+                else
+                    {
+                    notification.setContentText(random);
+                    nManager.notify(1, notification.build());
+                }
+            }
 
+        },60000,60000); // 60000 milliseconds = 1 minute
 
+        startForeground(1, notification.build());//This start the notification service
         return super.onStartCommand(intent, flags, startId);
-
     }
+
+
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+    private String watchRandomMovie(String random)
+    {
+        ArrayList<String> movies = new ArrayList<>();
+        for (int i = 0; i < syncServiceImpl.getMovies().size(); i++) {
+
+            if(!syncServiceImpl.getMovies().get(i).Watched)
+                movies.add(syncServiceImpl.getMovies().get(i).Title);
+        }
+        Random rand = new Random();
+        if(movies.size()!=0)
+        {
+            int n = rand.nextInt(movies.size());
+            random = movies.get(n);
+        }
+
+        return random;
     }
 
 }

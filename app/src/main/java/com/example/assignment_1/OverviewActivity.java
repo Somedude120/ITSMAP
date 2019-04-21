@@ -3,6 +3,7 @@ package com.example.assignment_1;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -40,6 +41,8 @@ public class OverviewActivity extends AppCompatActivity {
     private String url;
     //private String url = "http://www.omdbapi.com/?i=tt3896198&apikey=6d1d0b78";
     private ApiHelper api;
+    MyReceiver myReceiver;
+    IntentFilter intentFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +55,6 @@ public class OverviewActivity extends AppCompatActivity {
         new OkHttpClient.Builder()
                 .addNetworkInterceptor(new StethoInterceptor())
                 .build();
-
 
         //CSV Reading.
         InputStream inputStream = getResources().openRawResource(R.raw.movielist);
@@ -97,7 +99,6 @@ public class OverviewActivity extends AppCompatActivity {
             movieListCVS = savedInstanceState.getParcelableArrayList("savedMovieList");
         }
 
-        //Todo: Add the list of movies from database here
         final CustomListView customListView = new CustomListView(serviceImpl,OverviewActivity.this);
         customListView.notifyDataSetChanged();
         myMoviesList = findViewById(R.id.list_Movie);
@@ -105,6 +106,14 @@ public class OverviewActivity extends AppCompatActivity {
         customListView.notifyDataSetChanged();
         final EditText titleGetter = findViewById(R.id.editText_addTitle);
 
+
+        //Broadcast register
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(getPackageName() + "android.net.conn.CONNECTIVITY_CHANGE");
+
+
+        myReceiver = new MyReceiver();
+        registerReceiver(myReceiver, intentFilter);
 
         btn_Exit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,6 +126,7 @@ public class OverviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                Intent intent = new Intent();
                 url = "http://www.omdbapi.com/?apikey=6d1d0b78&t=";
                 if(titleGetter.getText().toString()==getResources().getString(R.string.title) || titleGetter.getText() == null)
                 {
@@ -128,9 +138,11 @@ public class OverviewActivity extends AppCompatActivity {
                 }
                 Log.d(TAG, "onAddClick: " + url);
 
-                api = new ApiHelper(OverviewActivity.this,url,customListView,serviceImpl);
-
+                api = new ApiHelper(OverviewActivity.this,url,customListView,serviceImpl, intent,myReceiver);
                 customListView.notifyDataSetChanged();
+                Log.d(TAG, "onAddClick: sendBroadcast");
+                intent = api.getBroadcastIntent();
+                sendBroadcast(intent);
             }
         });
 
@@ -212,6 +224,19 @@ public class OverviewActivity extends AppCompatActivity {
     {
         super.onRestoreInstanceState(savedInstanceState);
         currentItem = savedInstanceState.getInt("Position");
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(myReceiver, intentFilter);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        unregisterReceiver(myReceiver);
     }
 
 }
