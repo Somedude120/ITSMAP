@@ -4,10 +4,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -25,6 +28,7 @@ public class ApiHelper {
         Url = url;
         Adapter = adapter;
         serviceImpl = serviceimpl;
+        getData();
 
     }
     private void getData()
@@ -32,22 +36,50 @@ public class ApiHelper {
         final ProgressDialog progressDialog = new ProgressDialog(Context);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Url, new Response.Listener<JSONArray>() {
+        //JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET,Url,null, new Response.Listener<JSONObject>() {
+        StringRequest strReq = new StringRequest(Url, new Response.Listener<String>(){
             @Override
-            public void onResponse(JSONArray response) {
-                for (int i = 0; i < response.length(); i++) {
+            public void onResponse(String response)
+            {
+                //for (int i = 0; i < response.length(); i++)
+                {
                     try {
-                        JSONObject jsonObject = response.getJSONObject(i);
+                        JSONObject jsonObject = new JSONObject(response);
+                        //String img_url = jsonObject.getString("Poster");
+                        String title = jsonObject.optString("Title");
+                        String rating = jsonObject.optString("imdbRating");
+                        String genre = jsonObject.optString("Genre");
+                        String plot = jsonObject.optString("Plot");
+                        String res = jsonObject.optString("Response");
 
-                        Movie movie = new Movie();
-                        movie.setTitle(jsonObject.getString("Title"));
-                        movie.setRating(jsonObject.getString("imdbRating"));
-                        movie.setGenre(jsonObject.getString("Genre"));
-                        movie.setPlot(jsonObject.getString("Plot"));
 
 
-                        serviceImpl.insert(movie);
-                    } catch (JSONException e) {
+                        if(!res.equals("True"))
+                        {
+                            //TODO: Insert broadcaster here
+                        }
+                        else
+                        {
+                            Movie movie = new Movie();
+
+                            movie.setTitle(title);
+                            movie.setRating(rating);
+                            movie.setGenre(genre);
+                            movie.setPlot(plot);
+                            movie.setMyRating("0");
+                            movie.setWatched(false);
+                            movie.setComments("N/A");
+
+                            GenreSplitter splitter = new GenreSplitter(movie);
+                            movie.Icon = splitter.MainGenre();
+                            serviceImpl.insert(movie);
+                        }
+
+
+
+                    }
+                    catch (JSONException e)
+                    {
                         e.printStackTrace();
                         progressDialog.dismiss();
                     }
@@ -63,7 +95,7 @@ public class ApiHelper {
             }
         });
         RequestQueue requestQueue = Volley.newRequestQueue(Context);
-        requestQueue.add(jsonArrayRequest);
+        requestQueue.add(strReq);
     }
 }
 

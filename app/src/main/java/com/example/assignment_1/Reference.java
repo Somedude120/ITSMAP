@@ -19,6 +19,8 @@ package com.example.assignment_1;
 //Reference: https://www.journaldev.com/10356/android-broadcastreceiver-example-tutorial
 //Reference: https://stackoverflow.com/questions/51265338/how-to-get-all-data-from-room-table-in-android-using-async-task-in-a-list
 //Reference: https://medium.com/android-grid/how-to-fetch-json-data-using-volley-and-put-it-to-recyclerview-android-studio-383059a12d1e
-//Reference:
+//Reference: https://stackoverflow.com/questions/45940861/android-8-cleartext-http-traffic-not-permitted
+//Reference: https://github.com/Tobibur/MovieFinderOmdb/blob/master/app/src/main/java/com/example/tobibur/moviefinderomdb/ResultActivity.java
+
 public class Reference {
 }

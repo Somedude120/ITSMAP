@@ -52,6 +52,7 @@ public abstract class MovieDatabase extends RoomDatabase {
                 movies.add(movie);
 
             }
+            movies.remove(0);
 
 
             synchronized (MovieDatabase.class) {

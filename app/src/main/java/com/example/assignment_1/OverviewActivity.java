@@ -9,11 +9,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
@@ -34,7 +37,8 @@ public class OverviewActivity extends AppCompatActivity {
     private View overViewLayoutLS; //landscape overview
     private ImageView pic1;
     private ImageView pic2;
-    private String url = "http://www.omdbapi.com/?apikey=6d1d0b78&";
+    private String url;
+    //private String url = "http://www.omdbapi.com/?i=tt3896198&apikey=6d1d0b78";
     private ApiHelper api;
 
     @Override
@@ -99,6 +103,8 @@ public class OverviewActivity extends AppCompatActivity {
         myMoviesList = findViewById(R.id.list_Movie);
         myMoviesList.setAdapter(customListView);
         customListView.notifyDataSetChanged();
+        final EditText titleGetter = findViewById(R.id.editText_addTitle);
+
 
         btn_Exit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,12 +112,24 @@ public class OverviewActivity extends AppCompatActivity {
                 finish();
             }
         });
-        //Sends the user to detail, where movie is created by the user.
+        //Add movie you want
         btn_Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Add API CALL HERE
+
+                url = "http://www.omdbapi.com/?apikey=6d1d0b78&t=";
+                if(titleGetter.getText().toString()==getResources().getString(R.string.title) || titleGetter.getText() == null)
+                {
+                    url = url + "random";
+                }
+                else
+                {
+                    url = url + titleGetter.getText().toString();
+                }
+                Log.d(TAG, "onAddClick: " + url);
+
                 api = new ApiHelper(OverviewActivity.this,url,customListView,serviceImpl);
+
                 customListView.notifyDataSetChanged();
             }
         });

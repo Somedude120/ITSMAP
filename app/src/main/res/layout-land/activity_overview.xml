@@ -7,6 +7,18 @@
     android:layout_height="match_parent"
     tools:context=".OverviewActivity">
 
+    <EditText
+        android:id="@+id/editText_addTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/title"
+        app:layout_constraintBottom_toTopOf="@+id/btn_Exit"
+        app:layout_constraintEnd_toEndOf="@+id/btn_Add"
+        app:layout_constraintStart_toStartOf="@+id/btn_Exit" />
+
     <Button
         android:id="@+id/btn_Add"
         android:layout_width="wrap_content"
